@@ -53,10 +53,6 @@ for DUMP_DIR in $(ls -d ${DUMP_BASE}/*/); do
     /usr/bin/7za a -p${SECRET} ${ZIP_NAME}  -mx=0 -mhe -t7z ${DUMP_DIR} || { echo "Could not zip ${DUMP_DIR} into ${ZIP_NAME}" ; exit 1; }
 done
 
-
-echo "RClone-ing ${ZIP_DIR} to GCP ${GCP_DEST}"
-/bin/rclone sync ${ZIP_DIR}/ ${REMOTE}
-
 ## Sync All Resulting Files
 cd ${ZIP_DIR}
 for file in ${ZIP_DIR}/*; do
