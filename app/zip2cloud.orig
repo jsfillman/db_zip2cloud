@@ -50,13 +50,16 @@ for DUMP_DIR in $(ls -d ${DUMP_BASE}/*/); do
     ZIP_NAME=${ZIP_DIR}/${ZIP_BASE}_${DIR_NAME}
 
     echo "Zipping ${DUMP_DIR} to ${ZIP_NAME}"
-    /usr/bin/7za a -p${SECRET} ${ZIP_NAME}  -mx=0 -mhe -t7z ${DUMP_DIR} || { echo "Could not zip ${DUMP_DIR} into ${ZIP_NAME}" ; exit 1; }
+    /usr/bin/7za a -p${SECRET} ${ZIP_NAME}  -mx=7 -mhe -t7z ${DUMP_DIR} || { echo "Could not zip ${DUMP_DIR} into ${ZIP_NAME}" ; exit 1; }
+    [ -z "${DELETE_DUMP}" ] || { echo "Clearing contents of ${DUMP_DIR}"; rm -rf ${DUMP_DIR}*; }
 done
 
-
-echo "RClone-ing ${ZIP_DIR} to GCP ${GCP_DEST}"
-/bin/rclone -v sync ${ZIP_DIR}/ ${REMOTE}
-
-## Create a block that, upon success of rclone above, delete _only_ files that were uploaded
-## For each $FILE.7z in $ZIP_DIR, do a "rm -rf $DUMP_BASE/$FILE" to remove the original dump
+## Old 7zip Command
+#cd /
+##/usr/bin/7za
+#/opt/homebrew/bin/7zz a -p${SECRET} ${ZIP_DIR}/${ZIP_NAME}  -mx=7 -mhe -x!*.gz -t7z ${DUMP_BASE} || { echo "Could not zip ${DUMP_BASE} into ${ZIP_DIR}/${ZIP_NAME}" ; exit 1; }
 #[ -z "${DELETE_DUMP}" ] || { echo "Clearing contents of /dump/"; cd /dump/; rm -rf *; }
+
+#echo "RClone-ing ${ZIP_DIR} to GCP ${GCP_DEST}"
+#/bin/rclone sync ${ZIP_DIR}/ ${REMOTE}
+
