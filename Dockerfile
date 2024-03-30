@@ -4,8 +4,10 @@ FROM alpine:latest
 RUN apk update && \
     apk add p7zip rclone
 
+# Create config directory
+RUN mkdir -p /root/.config/rclone/
+
 # Copy necessary files
-mkdir -p /root/.config/rclone/
 COPY rclone.conf /root/.config/rclone/rclone.conf
 COPY app/ /app/
 
