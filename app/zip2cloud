@@ -57,7 +57,7 @@ done
 cd ${ZIP_DIR}
 for file in ${ZIP_DIR}/*; do
     echo "RClone-ing ${file} to GCP ${GCP_DEST}"
-    /bin/rclone sync -v "$file" ${REMOTE}
+    /bin/rclone sync -v "$file" ${REMOTE}/
 done
 
 ## Create a block that, upon success of rclone above, delete _only_ files that were uploaded
